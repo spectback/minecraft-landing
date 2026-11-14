@@ -1,0 +1,344 @@
+:root {
+  --sky: #7EB6FF;
+  --grass: #5D9E35;
+  --dirt: #866043;
+  --stone: #7F7F7F;
+  --deep: #3B3B45;
+  --diamond: #4AEDD9;
+  --gold: #FCEE4B;
+  --lava: #E8641B;
+  --bedrock: #2B2B2B;
+  --end: #1C1530;
+  --endstone: #DBDA9B;
+  --portal: #9B4FD9;
+  --ink: #3F3F3F;
+  --ui: #C6C6C6;
+  --slot: #8B8B8B;
+  --tile: 64px;
+  --px: "Tiny5", system-ui, sans-serif;
+  --body: "Golos Text", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bedrock);
+  color: #fff;
+  font: 400 18px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+img { image-rendering: pixelated; display: block; max-width: 100%; }
+h1, h2, h3 { font-family: var(--px); font-weight: 400; line-height: 1.1; margin: 0; }
+h2 { font-size: clamp(36px, 5.6vw, 60px); text-shadow: 3px 3px 0 var(--ink); }
+h3 { font-size: 28px; }
+p { margin: 0 0 1em; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 16px; z-index: 100; background: #000; padding: 8px 12px; }
+
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+.layer { position: relative; overflow: hidden; }
+
+/* ---------- F3 overlay ---------- */
+.f3 {
+  position: fixed; left: 12px; top: 12px; z-index: 50;
+  font: 400 16px/1.35 var(--px);
+  pointer-events: none;
+}
+.f3 p { margin: 0 0 2px; background: rgba(32, 32, 32, .62); padding: 1px 6px; width: fit-content; text-shadow: 2px 2px 0 #3F3F3F; }
+.f3 b { font-weight: 400; color: var(--gold); }
+
+/* ---------- Minecraft button ---------- */
+.mc-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 8px 28px;
+  font: 400 24px/1 var(--px); color: #fff; text-decoration: none;
+  text-shadow: 2px 2px 0 #3F3F3F;
+  background: #727272;
+  border: 2px solid #000;
+  box-shadow: inset 2px 2px 0 #ABABAB, inset -2px -4px 0 #4E4E4E;
+  cursor: pointer;
+}
+.mc-btn:hover { background: #7E8EC5; border-color: #fff; box-shadow: inset 2px 2px 0 #A9B6E3, inset -2px -4px 0 #5462A0; }
+.mc-btn:active { box-shadow: inset 2px 4px 0 #4E4E4E; }
+.mc-btn[aria-pressed="true"] { background: #5A6BA8; border-color: #fff; color: #FFFFA0; }
+.mc-btn.wide { min-width: 280px; }
+
+/* ---------- 1. surface ---------- */
+.surface {
+  min-height: 100svh;
+  background: linear-gradient(#6FA8F7 0 14%, #76AEF9 14% 28%, #7EB6FF 28% 42%, #88BCFF 42% 56%, #93C3FF 56% 70%, #9FCBFF 70% 84%, #AAD2FF 84%);
+  display: grid; place-items: center;
+  padding: 72px 16px 38svh;
+}
+.landscape {
+  position: absolute; left: 0; bottom: 0; width: 100%; height: 44svh;
+  max-width: none; object-fit: cover; object-position: center bottom;
+}
+.sky { position: absolute; inset: 0 0 50% 0; }
+.cloud { position: absolute; width: 192px; animation: drift 90s linear infinite; }
+.cloud.c1 { top: 10%; animation-delay: -10s; }
+.cloud.c2 { top: 24%; width: 120px; animation-duration: 120s; animation-delay: -70s; }
+.cloud.c3 { top: 4%; width: 256px; animation-duration: 140s; animation-delay: -95s; }
+.cloud.c4 { top: 34%; width: 100px; animation-duration: 100s; animation-delay: -30s; }
+@keyframes drift { from { transform: translateX(-300px); } to { transform: translateX(calc(100vw + 300px)); } }
+
+.hero-inner { position: relative; z-index: 2; text-align: center; max-width: 760px; }
+.logo-wrap { position: relative; width: fit-content; margin: 0 auto 28px; }
+.logo {
+  text-transform: uppercase;
+  font-size: clamp(60px, 14vw, 172px);
+  letter-spacing: .02em;
+  color: #9a9a9a;
+  background: url(assets/t-stone.png) 0 0 / 40px 40px;
+  image-rendering: pixelated;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 5px 0 #3a3a3a) drop-shadow(5px 5px 0 #1e1e1e);
+}
+.splash {
+  position: absolute; right: -4%; bottom: -6%;
+  font: 400 clamp(18px, 2.6vw, 30px)/1 var(--px);
+  color: #FFFF00; -webkit-text-fill-color: #FFFF00;
+  text-shadow: 2px 2px 0 #3F3F00;
+  white-space: nowrap;
+  transform: rotate(-20deg);
+  animation: splash .5s ease-in-out infinite alternate;
+}
+@keyframes splash { to { transform: rotate(-20deg) scale(1.1); } }
+.lede {
+  font-size: clamp(18px, 2.2vw, 22px); font-weight: 500;
+  max-width: 34ch; margin: 0 auto 28px;
+  text-shadow: 2px 2px 0 rgba(30, 50, 90, .55);
+}
+.btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-row .mc-btn { min-width: 220px; }
+
+/* ---------- textured layers ---------- */
+.dirt {
+  background: url(assets/t-dirt.png) 0 0 / var(--tile);
+  padding: 96px 0 120px;
+}
+.stone {
+  background: url(assets/s-dirt-stone.png) 0 0 / calc(var(--tile) * 4) var(--tile) repeat-x,
+              url(assets/t-coal-ore.png) 192px 320px / var(--tile) no-repeat,
+              url(assets/t-iron-ore.png) 75% 70% / var(--tile) no-repeat,
+              url(assets/t-coal-ore.png) 88% 128px / var(--tile) no-repeat,
+              url(assets/t-iron-ore.png) 64px 85% / var(--tile) no-repeat,
+              url(assets/t-stone.png) 0 0 / var(--tile);
+  padding: 140px 0 120px;
+}
+.cave {
+  background: url(assets/s-stone-cave.png) 0 0 / calc(var(--tile) * 4) var(--tile) repeat-x,
+              radial-gradient(circle at 8% 45%, rgba(255, 160, 60, .28), transparent 22%),
+              radial-gradient(circle at 92% 30%, rgba(255, 160, 60, .25), transparent 20%),
+              url(assets/t-cave.png) 0 0 / var(--tile);
+  padding: 140px 0 120px;
+}
+.deep {
+  background: url(assets/s-cave-deepslate.png) 0 0 / calc(var(--tile) * 4) var(--tile) repeat-x,
+              url(assets/t-deepslate.png) 0 0 / var(--tile);
+  padding: 140px 0 120px;
+}
+.on-tex { margin-bottom: 12px; }
+.sub { font-size: 18px; margin-bottom: 40px; text-shadow: 2px 2px 0 rgba(0, 0, 0, .6); }
+
+/* ---------- 2. dirt ---------- */
+.about { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
+.plate {
+  background: rgba(24, 16, 10, .72);
+  padding: 32px 36px 20px;
+  border: 4px solid #2a1c12;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .06);
+  max-width: 62ch;
+}
+.plate h2 { margin-bottom: 20px; }
+.about-art { position: relative; margin: 0; height: 300px; }
+.about-art .ct { position: absolute; width: 256px; left: 6%; bottom: 0; filter: drop-shadow(8px 8px 0 rgba(0,0,0,.35)); }
+.about-art .pk { position: absolute; width: 192px; right: 4%; top: 0; transform: rotate(8deg); filter: drop-shadow(8px 8px 0 rgba(0,0,0,.35)); }
+
+.facts {
+  list-style: none; padding: 0; margin-top: 64px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.facts li {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--ui); color: var(--ink);
+  padding: 12px 16px;
+  border: 2px solid #000;
+  box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 #555;
+  line-height: 1.3;
+}
+.facts b { display: block; font: 400 30px/1 var(--px); }
+.slot {
+  flex: none; display: grid; place-items: center;
+  width: 64px; height: 64px;
+  background: var(--slot);
+  box-shadow: inset 3px 3px 0 #373737, inset -3px -3px 0 #fff;
+}
+.slot img { width: 48px; height: 48px; }
+
+/* ---------- 3. modes ---------- */
+.modes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 32px; }
+.inv-card {
+  background: var(--ui); color: var(--ink);
+  border: 2px solid #000;
+  box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 #555, 6px 6px 0 rgba(0, 0, 0, .35);
+  padding: 12px 12px 4px;
+  transition: transform .08s, box-shadow .08s;
+}
+.inv-card:hover { transform: translate(2px, 2px); box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 #555, 4px 4px 0 rgba(0, 0, 0, .35); }
+.inv-card img {
+  width: 100%; aspect-ratio: 64 / 40;
+  border: 3px solid #373737; border-right-color: #fff; border-bottom-color: #fff;
+  margin-bottom: 14px;
+}
+.inv-card h3 { margin-bottom: 6px; }
+.inv-card p { font-size: 16px; line-height: 1.5; }
+
+/* ---------- 4. mobs ---------- */
+.wall-torch { position: absolute; width: 64px; top: 38%; }
+.wall-torch.t1 { left: 6%; }
+.wall-torch.t2 { right: 6%; top: 22%; }
+.mobs {
+  list-style: none; margin: 0; padding: 8px max(16px, calc((100% - 1120px) / 2)) 24px;
+  display: flex; gap: 20px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(16px, calc((100% - 1120px) / 2));
+  scrollbar-color: #8B8B8B #222;
+}
+.mob {
+  flex: 0 0 240px; scroll-snap-align: start;
+  background: rgba(18, 18, 22, .82);
+  border: 4px solid #555; border-top-color: #777; border-left-color: #777;
+  padding: 16px 16px 18px;
+}
+.mob-pic {
+  height: 200px; display: grid; place-items: end center;
+  background: rgba(255, 255, 255, .04);
+  margin-bottom: 14px; padding-bottom: 8px;
+}
+.mob-pic img { height: 176px; width: auto; filter: drop-shadow(4px 4px 0 rgba(0,0,0,.6)); }
+.mob h3 { color: #fff; text-shadow: 2px 2px 0 #000; margin-bottom: 6px; }
+.mob p { font-size: 16px; line-height: 1.45; color: #ddd; min-height: 3em; }
+.hp { display: flex; flex-wrap: wrap; gap: 2px; }
+.hp img { width: 18px; height: 18px; }
+
+/* ---------- 5. craft ---------- */
+.ores i {
+  position: absolute; width: var(--tile); height: var(--tile);
+  background: url(assets/t-diamond-ore.png) 0 0 / var(--tile);
+  image-rendering: pixelated;
+  animation: glint 3.2s ease-in-out infinite;
+}
+.ores i:nth-child(1) { left: 64px; top: 256px; }
+.ores i:nth-child(2) { right: 128px; top: 192px; animation-delay: -1s; }
+.ores i:nth-child(3) { left: 192px; bottom: 128px; animation-delay: -2s; }
+.ores i:nth-child(4) { right: 256px; bottom: 192px; animation-delay: -.5s; }
+@keyframes glint { 50% { filter: brightness(1.6) drop-shadow(0 0 10px rgba(74, 237, 217, .7)); } }
+
+.crafter { display: grid; justify-items: start; gap: 24px; }
+.deep .wrap { position: relative; z-index: 1; }
+.bench {
+  background: var(--ui); color: var(--ink);
+  border: 2px solid #000;
+  box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 #555;
+  padding: 14px 28px 28px;
+}
+.bench-title { font: 400 24px/1 var(--px); margin: 0 0 14px; }
+.bench-row { display: flex; align-items: center; gap: 28px; }
+.grid { display: grid; grid-template-columns: repeat(3, 64px); gap: 4px; }
+.grid .slot { width: 64px; height: 64px; }
+.slot img.pop { animation: pop .18s steps(3); }
+@keyframes pop { from { transform: scale(.4); } }
+.arrow {
+  width: 48px; height: 32px;
+  background: #8B8B8B;
+  clip-path: polygon(0 35%, 55% 35%, 55% 0, 100% 50%, 55% 100%, 55% 65%, 0 65%);
+}
+.slot.big { width: 92px; height: 92px; }
+.slot.big img { width: 64px; height: 64px; }
+.recipes { display: flex; flex-wrap: wrap; gap: 12px; }
+.recipes .mc-btn { min-width: 140px; }
+.recipe-note {
+  min-height: 3.2em; max-width: 52ch;
+  background: rgba(16, 16, 20, .75); padding: 10px 14px;
+  border-left: 4px solid var(--diamond);
+}
+
+/* ---------- 6. bottom ---------- */
+.bottom { background: var(--bedrock); }
+.lava {
+  height: 128px;
+  background: url(assets/s-deepslate-lava.png) 0 0 / calc(var(--tile) * 4) var(--tile) repeat-x,
+              url(assets/t-lava.png) 0 0 / var(--tile);
+  animation: flow 8s linear infinite;
+}
+@keyframes flow { to { background-position: 0 0, var(--tile) var(--tile); } }
+.bedrock {
+  background: url(assets/t-bedrock.png) 0 0 / var(--tile);
+  padding: 64px 16px;
+  text-align: center;
+}
+.on-tex.small { font-size: clamp(22px, 3vw, 32px); max-width: 26ch; margin: 0 auto; background: rgba(0,0,0,.55); padding: 16px 20px; }
+
+/* ---------- 7. end ---------- */
+.end { background: var(--end); padding: 0 0 96px; }
+.end-scene { width: 100%; max-width: none; height: clamp(300px, 62svh, 620px); object-fit: cover; object-position: center 40%; }
+.end-inner {
+  display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center;
+  margin-top: -40px; position: relative;
+}
+.portal { width: 240px; filter: drop-shadow(0 0 24px rgba(155, 79, 217, .55)); animation: portal 4s ease-in-out infinite; }
+@keyframes portal { 50% { filter: drop-shadow(0 0 40px rgba(91, 211, 196, .55)); } }
+.end h2 { margin-bottom: 12px; }
+.end p { font-size: 20px; color: var(--endstone); }
+
+/* ---------- footer ---------- */
+.foot {
+  background: url(assets/t-bedrock.png) 0 0 / var(--tile);
+  padding: 40px 16px;
+  display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: center;
+  text-align: center;
+}
+.foot p { margin: 0; font-size: 15px; background: rgba(0,0,0,.6); padding: 6px 10px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .modes { grid-template-columns: repeat(2, 1fr); }
+  .about { grid-template-columns: 1fr; }
+  .about-art { height: 220px; }
+  .about-art .ct { width: 192px; } .about-art .pk { width: 140px; }
+  .facts { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  :root { --tile: 48px; }
+  .f3 { font-size: 12px; left: 8px; top: 8px; }
+  .f3 p:first-child { display: none; }
+  .surface { padding-bottom: 40svh; }
+  .landscape { height: 44svh; }
+  .modes { grid-template-columns: 1fr; }
+  .plate { padding: 24px 20px 12px; }
+  .wall-torch { display: none; }
+  .bench { padding: 12px 14px 18px; }
+  .bench-row { gap: 12px; }
+  .grid { grid-template-columns: repeat(3, 52px); }
+  .grid .slot { width: 52px; height: 52px; }
+  .grid .slot img { width: 32px; height: 32px; }
+  .slot.big { width: 72px; height: 72px; } .slot.big img { width: 48px; height: 48px; }
+  .arrow { width: 32px; }
+  .recipes .mc-btn { min-width: calc(50% - 6px); }
+  .end-inner { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 28px; }
+  .portal { width: 160px; }
+  .mc-btn.wide { min-width: 0; width: 100%; }
+  .ores i:nth-child(n+3) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
